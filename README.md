@@ -1,6 +1,14 @@
 # Ferdowsi — Smart Home Dashboard
 
-A front-end smart home dashboard built with React and Vite. It's a fully client-side demo/prototype — all data is simulated or seeded locally (with `localStorage` persistence), so it runs with no backend, API keys, or real devices required.
+A React + Vite smart home dashboard, now paired with an optional Django backend
+(`backend/`) that adds three genuinely model-backed AI features — energy
+forecasting, occupancy prediction, and a prescriptive energy-management
+agent — trained on real public datasets. The dashboard itself still runs
+standalone with no backend at all (all device/room/automation data is
+simulated, seeded locally, and persisted via `localStorage`); the backend is
+additive, not required, for everything except the three 🤖-marked features
+below. See [FEATURES.md](FEATURES.md), [MINDSET.md](MINDSET.md), and
+[backend/README.md](backend/README.md) for the full story.
 
 ![Project overview](docs/media/project-overview.gif)
 
@@ -18,6 +26,18 @@ A front-end smart home dashboard built with React and Vite. It's a fully client-
 |---|
 | ![AI Insights](docs/media/6-ai-insights.png) |
 
+### AI features (Django backend, real trained models)
+
+![AI features demo](docs/media/ai-features-demo.gif)
+
+| Energy Forecast 🤖 (RandomForest + Holt-Winters) | Predicted occupancy 🤖 (RandomForest + LogReg) |
+|---|---|
+| ![Forecast](docs/media/7-forecast.png) | ![Occupancy](docs/media/8-occupancy-map.png) |
+
+| AI Energy Manager 🤖 (tabular Q-learning) |
+|---|
+| ![AI Manager](docs/media/9-ai-manager.png) |
+
 ## Features
 
 - **Dashboard** — live-editable device grid, room cards with per-device on/off toggles, security status, presence detection, network status, energy distribution overview, an interactive floor plan, and a draggable dual-setpoint thermostat.
@@ -30,6 +50,9 @@ A front-end smart home dashboard built with React and Vite. It's a fully client-
 - **Activity log** — a full log combining seeded activity history with live notifications.
 - **Settings / Profile** — theme (light/dark), localization (timezone, number/date/time format, first day of week), and a Home-Assistant-style settings landing page.
 - Responsive layout, light/dark theme, toast notifications, and route-level code splitting for fast initial load.
+- **Energy → Forecast 🤖** — a 48h energy forecast from an ensemble (RandomForest + Holt-Winters) trained on the real [UCI household power dataset](https://archive.ics.uci.edu/dataset/235), with a prediction interval and a "what if I ran this appliance at hour X" scenario tool. Requires the Django backend.
+- **Map → Predicted occupancy 🤖** — per-room occupancy probability from a RandomForest/LogisticRegression pair trained on the real [UCI Occupancy Detection dataset](https://archive.ics.uci.edu/dataset/357). Requires the backend.
+- **AI Manager 🤖** — a tabular Q-learning agent recommends an hourly energy action (idle / run a flexible load / charge / discharge the battery), shows every alternative it considered with its learned Q-value, and logs your accept/reject decisions. Requires the backend.
 
 ## Tech stack
 
@@ -39,6 +62,7 @@ A front-end smart home dashboard built with React and Vite. It's a fully client-
 - [Leaflet](https://leafletjs.com/) / [react-leaflet](https://react-leaflet.js.org/) for the map
 - Plain CSS (no framework/UI kit) — theme via CSS custom properties
 - [Oxlint](https://oxc.rs/docs/guide/usage/linter) for linting
+- **Backend** (optional, `backend/`): [Django](https://www.djangoproject.com/) + [DRF](https://www.django-rest-framework.org/), [scikit-learn](https://scikit-learn.org/), [statsmodels](https://www.statsmodels.org/), a custom [Gymnasium](https://gymnasium.farama.org/) environment — see [backend/README.md](backend/README.md).
 
 ## Getting started
 
@@ -50,22 +74,46 @@ npm run preview   # preview the production build locally
 npm run lint       # run Oxlint
 ```
 
-Requires Node.js 18+.
+Requires Node.js 18+. This alone runs the full dashboard except the three
+🤖-marked AI features above.
+
+To enable those, also start the backend (see [backend/README.md](backend/README.md)
+for details):
+
+```bash
+cd backend
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py train_forecast        # ~15s, downloads the UCI power dataset on first run
+python manage.py train_occupancy       # ~8s, downloads the UCI occupancy dataset on first run
+python manage.py train_energy_manager  # ~3s, no dataset needed
+python manage.py runserver 127.0.0.1:8000
+```
+
+The frontend talks to it at `http://<page-host>:8000/api` by default (see
+`.env.example` to override via `VITE_API_BASE_URL`).
 
 ## Project structure
 
 ```
 src/
+├─ api/             # Fetch layer for the Django backend (client.js)
 ├─ components/     # Reusable UI: cards, modals, charts, the thermostat dial, AI panels, etc.
-├─ pages/          # One component per route (Dashboard, Energy, Map, Automations, Profile, Settings)
+├─ pages/          # One component per route (Dashboard, Energy, Map, Automations, AI Manager, Profile, Settings)
 ├─ layout/          # App shell: sidebar + top-level layout/outlet
-├─ hooks/           # State + behavior: managed devices, notifications, live power simulation, AI insights, theme, localization, etc.
+├─ hooks/           # State + behavior: managed devices, notifications, live power simulation, AI insights, useForecast/useOccupancy/useEnergyManager, theme, localization, etc.
 ├─ data/            # Seed/mock data (devices, rooms, energy, automations, security, notifications...)
-├─ styles/          # Plain CSS, split by page/feature
+├─ styles/          # Plain CSS, split by page/feature (incl. ai-features.css)
 ├─ utils/           # Small formatting helpers (relative time, locale-aware number/date formatting)
 ├─ chartSetup.js    # Chart.js registration + shared chart options
 ├─ App.jsx          # Routes (lazy-loaded per page) + providers (Toast, Notifications, ErrorBoundary)
 └─ main.jsx         # Entry point
+
+backend/             # Optional Django + DRF service — see backend/README.md
+├─ forecasting/      # Direction A: energy forecast (RandomForest + Holt-Winters)
+├─ occupancy/        # Direction C: occupancy prediction (RandomForest + LogReg)
+├─ energy_manager/   # Direction D: prescriptive Q-learning agent
+└─ ml_artifacts/     # Cached datasets + trained model checkpoints (git-ignored)
 ```
 
 ## Notes on the simulated data
@@ -76,7 +124,23 @@ src/
 
 ### Note on the AI features
 
-The "AI" panels are **rule-based, not model-backed** — there's no LLM or external API call involved. `useAIInsights` runs plain heuristics (thresholds/pattern checks) over the app's own live state, and the Security Assistant plays back a scripted sequence of steps. The *effects* are real (it genuinely locks the front door and arms security in app state), but the *reasoning* isn't — it's a demonstration of the UX pattern, not a trained model. The natural next step would be swapping the heuristics in `useAIInsights.js` for a real model call, or adding an LLM-powered chat assistant (kept out of this client-only build since that requires a backend to avoid exposing an API key in the browser).
+There are now two different kinds of "AI" in this app — worth being precise
+about which is which:
+
+- **`AIInsightsPanel` / `AISecurityAssistant` (client-only, rule-based)** —
+  no model, no backend. `useAIInsights` runs plain heuristics
+  (thresholds/pattern checks) over the app's own live state, and the
+  Security Assistant plays back a scripted sequence of steps. The *effects*
+  are real (it genuinely locks the front door and arms security in app
+  state), but the *reasoning* isn't — it's a demonstration of the UX
+  pattern, not a trained model.
+- **Forecast / Predicted occupancy / AI Manager (🤖, backend-backed, real
+  models)** — actual scikit-learn/statsmodels models and a trained
+  Q-learning agent, served by `backend/` and trained on real public
+  datasets with held-out test metrics. See [FEATURES.md](FEATURES.md) for
+  what each one is and [MINDSET.md](MINDSET.md) for why they're built the
+  way they are (and what's still simulated within them, documented
+  explicitly rather than left implicit).
 
 ## License
 

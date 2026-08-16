@@ -8,6 +8,7 @@ import GridBalanceBar from '../components/GridBalanceBar.jsx';
 import EnergyFlowSankey from '../components/EnergyFlowSankey.jsx';
 import EnergyPeriodBar from '../components/EnergyPeriodBar.jsx';
 import EnergyNowPanel from '../components/EnergyNowPanel.jsx';
+import ForecastPanel from '../components/ForecastPanel.jsx';
 import '../chartSetup.js';
 import { baseChartOptions, cssVar } from '../chartSetup.js';
 import {
@@ -31,7 +32,8 @@ const TABS = [
   { id: 'electricity', label: 'Electricity' },
   { id: 'gas', label: 'Gas' },
   { id: 'water', label: 'Water' },
-  { id: 'now', label: 'Now' }
+  { id: 'now', label: 'Now' },
+  { id: 'forecast', label: 'Forecast 🤖' }
 ];
 
 export default function EnergyPage() {
@@ -357,6 +359,7 @@ export default function EnergyPage() {
         )}
 
         {tab === 'now' && <EnergyNowPanel />}
+        {tab === 'forecast' && <ForecastPanel />}
       </section>
     </div>
   );

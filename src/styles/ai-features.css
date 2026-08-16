@@ -1,0 +1,261 @@
+/* ==========================================================================
+   Styles for the Django-backed AI features: energy forecast, occupancy
+   heatmap, AI energy manager. Reuses existing tokens (--surface-2, --border,
+   --text-2, etc.) so these blend into both themes without redefining them.
+   ========================================================================== */
+
+@keyframes ai-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-fade-in {
+  animation: ai-fade-in 380ms ease both;
+}
+
+.q-color-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  margin-right: 8px;
+}
+
+.ai-status-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.ai-status-banner.error {
+  border-color: #f2767666;
+  background: rgba(242, 118, 118, 0.08);
+  color: var(--text);
+}
+
+.ai-status-banner code {
+  background: var(--surface-3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.whatif-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  margin-bottom: 16px;
+}
+
+.whatif-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.whatif-field input,
+.whatif-field select {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.forecast-metrics-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.forecast-metric-chip {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.forecast-metric-chip b {
+  color: var(--text);
+}
+
+.map-occupancy-panel {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 320px;
+  max-width: calc(100% - 30px);
+  max-height: calc(100% - 30px);
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.occupancy-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.occupancy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.occupancy-room-card {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.occupancy-room-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.occupancy-bar-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.occupancy-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 300ms ease;
+}
+
+.occupancy-prob {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.occupancy-badge {
+  align-self: flex-start;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.occupancy-badge.occupied {
+  background: rgba(85, 209, 135, 0.16);
+  color: #55d187;
+}
+
+.occupancy-badge.empty {
+  background: var(--surface-3);
+  color: var(--text-3);
+}
+
+.ai-manager-card {
+  border-radius: var(--radius-md, 12px);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  padding: 20px;
+}
+
+.ai-manager-action {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 4px 0 6px;
+}
+
+.ai-manager-explanation {
+  color: var(--text-2);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.ai-manager-actions-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.ai-manager-alternatives {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.ai-manager-alt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.ai-manager-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.ai-manager-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.ai-manager-history-table th,
+.ai-manager-history-table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+}
+
+.ai-manager-history-table th {
+  color: var(--text-3);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+
+.status-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.status-pill.pending { background: rgba(110,168,254,0.16); color: #6ea8fe; }
+.status-pill.accepted { background: rgba(85,209,135,0.16); color: #55d187; }
+.status-pill.rejected { background: rgba(242,118,118,0.16); color: #f27676; }

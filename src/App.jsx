@@ -12,6 +12,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard.jsx'));
 const MapPage = lazy(() => import('./pages/MapPage.jsx'));
 const AutomationsPage = lazy(() => import('./pages/AutomationsPage.jsx'));
 const EnergyPage = lazy(() => import('./pages/EnergyPage.jsx'));
+const AIManagerPage = lazy(() => import('./pages/AIManagerPage.jsx'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage.jsx'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage.jsx'));
 
@@ -27,6 +28,7 @@ export default function App() {
                 <Route path="map" element={<MapPage />} />
                 <Route path="automations" element={<AutomationsPage />} />
                 <Route path="energy" element={<EnergyPage />} />
+                <Route path="ai-manager" element={<AIManagerPage />} />
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
               </Route>

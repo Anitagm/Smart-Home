@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { MapContainer, TileLayer, Circle, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { homeZone, mapPersons } from '../data/map-data.js';
+import OccupancyHeatmap from '../components/OccupancyHeatmap.jsx';
 
 function personIcon(person) {
   return L.divIcon({
@@ -58,6 +59,8 @@ export default function MapPage() {
           </Marker>
         ))}
       </MapContainer>
+
+      <OccupancyHeatmap />
     </div>
   );
 }
