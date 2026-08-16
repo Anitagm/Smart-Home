@@ -7,8 +7,22 @@ agent — trained on real public datasets. The dashboard itself still runs
 standalone with no backend at all (all device/room/automation data is
 simulated, seeded locally, and persisted via `localStorage`); the backend is
 additive, not required, for everything except the three 🤖-marked features
-below. See [FEATURES.md](FEATURES.md), [MINDSET.md](MINDSET.md), and
-[backend/README.md](backend/README.md) for the full story.
+below.
+
+**Documentation map** (this project is written to also be a usable basis
+for a real paper — these are aimed at that):
+
+| Doc | What's in it |
+|---|---|
+| [ALL_FEATURES.md](ALL_FEATURES.md) | Complete feature/route/API/dataset/algorithm inventory |
+| [THEORY.md](THEORY.md) | Formal problem statements, algorithms, equations, citations |
+| [ANALYSIS.md](ANALYSIS.md) | Actual result tables, honest interpretation, limitations & threats to validity |
+| [INTUITION.md](INTUITION.md) | Plain-language reasoning behind each design choice, no equations |
+| [MINDSET.md](MINDSET.md) | Why the project is built the way it is, working-style principles |
+| [ROADMAP.md](ROADMAP.md) | What's done, deferred (and why), explicitly not planned |
+| [TODO.md](TODO.md) | Actionable next steps |
+| [CHANGELOG.md](CHANGELOG.md) | Chronological log of what changed and why |
+| [backend/README.md](backend/README.md) | Backend setup/run instructions |
 
 ![Project overview](docs/media/project-overview.gif)
 

@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-08-16 (3) — Paper-facing documentation: theory, analysis, intuition
+
+Added four documents specifically written for someone (human or AI agent)
+turning this project into a scientific paper — formal algorithm
+descriptions with citations, the actual result tables with an honest read
+of what they do and don't show, plain-language reasoning for each design
+choice, and a complete feature/route/API/dataset inventory.
+
+### Added
+
+- `THEORY.md` — formal problem statements, algorithms (Random Forest,
+  Holt-Winters, Q-learning/Bellman equation), equations, and citations for
+  all three directions.
+- `ANALYSIS.md` — full result tables pulled live from each app's
+  `meta.json`, per-metric interpretation, the Holt-Winters bug write-up
+  with before/after numbers, and a "Limitations & threats to validity"
+  section (internal/external/construct validity, statistical caveats)
+  aimed directly at what a paper reviewer would ask.
+- `INTUITION.md` — plain-language mental models for why each approach was
+  chosen, no equations, meant to seed a paper's introduction/motivation
+  section and to keep future extensions consistent with the project's
+  reasoning.
+- `ALL_FEATURES.md` — complete feature/route/API/dataset/algorithm
+  inventory spanning both the original client-only dashboard and the new
+  AI backend (supersedes needing to cross-reference `FEATURES.md` +
+  `README.md` for the full picture).
+
+### Changed
+
+- `MINDSET.md`, `ROADMAP.md`, `README.md`: cross-linked to the four new
+  documents.
+
 ## 2026-08-16 (2) — Visual polish, real demo screenshots/GIF, Holt-Winters fix
 
 ### Added

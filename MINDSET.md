@@ -1,7 +1,13 @@
 # Mindset
 
 Why this project is built the way it is — read this before changing an approach,
-not just what the approach is.
+not just what the approach is. Companion documents, each with a distinct
+job: [THEORY.md](THEORY.md) (formal algorithms + citations),
+[ANALYSIS.md](ANALYSIS.md) (actual results + honest interpretation),
+[INTUITION.md](INTUITION.md) (plain-language reasoning, no equations),
+[ALL_FEATURES.md](ALL_FEATURES.md) (complete feature/route/API inventory),
+[ROADMAP.md](ROADMAP.md) (what's deferred and why), [TODO.md](TODO.md)
+(actionable next steps).
 
 ## The premise
 

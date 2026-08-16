@@ -1,5 +1,10 @@
 # Roadmap
 
+See also: [THEORY.md](THEORY.md), [ANALYSIS.md](ANALYSIS.md) (esp. its
+[Limitations & threats to validity](ANALYSIS.md#limitations--threats-to-validity)
+section, which motivates several items below), [INTUITION.md](INTUITION.md),
+[ALL_FEATURES.md](ALL_FEATURES.md), [TODO.md](TODO.md).
+
 ## Done
 
 - [x] Django + DRF backend scaffolded alongside the existing React app
