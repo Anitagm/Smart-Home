@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-08-23 — Sync
+
+Synced repository state (2026-08-23).
+
 ## 2026-08-16 (3) — Paper-facing documentation: theory, analysis, intuition
 
 Added four documents specifically written for someone (human or AI agent)
