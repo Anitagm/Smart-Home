@@ -26,6 +26,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.117.1",
     "chart.js": "^4.5.1",
     "leaflet": "^1.9.4",
     "react": "^19.2.8",
