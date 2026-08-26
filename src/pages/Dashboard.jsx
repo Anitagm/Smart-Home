@@ -13,6 +13,7 @@ import FloorPlanInteractive from '../components/FloorPlanInteractive.jsx';
 import ThermostatCard from '../components/ThermostatCard.jsx';
 import AIInsightsPanel from '../components/AIInsightsPanel.jsx';
 import AISecurityAssistant from '../components/AISecurityAssistant.jsx';
+import AIChatWidget from '../components/AIChatWidget.jsx';
 import { useManagedDevices } from '../hooks/useManagedDevices.js';
 import { useRoomDevices } from '../hooks/useRoomDevices.js';
 import { useSecurityState } from '../hooks/useSecurityState.js';
@@ -333,6 +334,15 @@ export default function Dashboard() {
           <DevicesGrid devices={devices} onToggle={handleToggleDevice} onDim={setDim} />
         </div>
       </div>
+
+      <AIChatWidget
+        devices={devices}
+        toggleDevice={toggleDevice}
+        rooms={rooms}
+        toggleRoomDevice={toggleRoomDevice}
+        securityState={securityState}
+        setStatus={setStatus}
+      />
 
       <ManageDevicesModal
         open={manageOpen}
