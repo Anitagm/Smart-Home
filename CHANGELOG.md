@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-08-26 — Dockerize + README overhaul
+
+Full Docker Compose setup for the whole stack (frontend + backend), a
+one-command `run.sh` wrapper, and a rewritten README (badges, tech-stack/
+feature tables, architecture diagram, how-to-use walkthrough, model
+performance table).
+
+### Added
+
+- `Dockerfile` — Node build stage -> nginx runtime for the frontend.
+- `backend/Dockerfile` + `backend/entrypoint.sh` — migrate, train any
+  missing model, then serve with gunicorn.
+- `nginx.conf` — static serving + `/api` and `/admin` reverse proxy to the
+  backend container.
+- `docker-compose.yml` — `frontend`/`backend` services, named volumes for
+  the sqlite DB and trained model artifacts.
+- `run.sh` — `up`/`stop`/`down`/`reset`/`logs` one-command wrapper.
+- `.dockerignore` (root + backend).
+
+### Changed
+
+- `backend/smarthome_ai/settings.py` — sqlite path now overridable via
+  `SQLITE_DB_PATH`, so the Docker image can point it at a mounted volume.
+- `README.md` — badges, animated header, table of contents, features/
+  tech-stack/model-performance tables, architecture diagram (Mermaid), a
+  How to use walkthrough, and Docker-first quickstart.
+
+
 ## 2026-08-23 — Sync
 
 Synced repository state (2026-08-23).

@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: smarthome-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist the sqlite DB and trained model artifacts across restarts,
+      # so containers don't retrain/remigrate every time.
+      - backend_db:/app/data
+      - ml_artifacts:/app/ml_artifacts
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SQLITE_DB_PATH=/app/data/db.sqlite3
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/energy-manager/history/')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  frontend:
+    build:
+      context: .
+      args:
+        VITE_API_BASE_URL: /api
+    container_name: smarthome-frontend
+    restart: unless-stopped
+    ports:
+      - "8090:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  backend_db:
+  ml_artifacts:

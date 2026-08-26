@@ -94,10 +94,15 @@ WSGI_APPLICATION = 'smarthome_ai.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # Overridable so the Docker image can point this at a mounted
+        # volume directory (see docker-compose.yml) instead of baking the
+        # DB into the container's writable layer.
+        'NAME': os.environ.get('SQLITE_DB_PATH', str(BASE_DIR / 'db.sqlite3')),
     }
 }
 
